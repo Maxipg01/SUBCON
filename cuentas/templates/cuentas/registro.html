@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Registrarse</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    form {
+      max-width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    form input[type="text"],
+    form input[type="password"],
+    form select {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    form button,
+    form input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+  <h1>Registrarse</h1>
+
+  <form id="registroForm" method="post" action="{% url 'cuentas:registro' %}">
+    {% csrf_token %}
+    <div>
+      <label for="id_nombres">Nombre(s):</label>
+      <input type="text" name="nombres" id="id_nombres">
+    </div>
+    <div>
+      <label for="id_apellidos">Apellidos:</label>
+      <input type="text" name="apellidos" id="id_apellidos">
+    </div>
+    <div>
+      <label for="id_username">Usuario:</label>
+      <input type="text" name="username" id="id_username">
+    </div>
+    <div>
+      <label for="id_password">Contraseña:</label>
+      <input type="password" name="password" id="id_password">
+    </div>
+    <div>
+      <label for="id_sucursal">Sucursal:</label>
+      <select name="sucursal" id="id_sucursal">
+        <option value="HEB">HEB</option>
+        <option value="4 Caminos">4 Caminos</option>
+        <!-- Agrega más opciones de sucursales según sea necesario -->
+      </select>
+    </div>
+    <div>
+      <label for="id_tipo_usuario">Tipo de usuario:</label>
+      <select name="tipo_usuario" id="id_tipo_usuario">
+        <option value="usuario">usuario</option>
+        <option value="admin">admin</option>
+      </select>
+    </div>
+    <button onclick="solicitarContraseña()">Registrarse</button>
+    <input type="submit" value="Registrarse" style="display: none;">
+  </form>
+
+  <script>
+    function solicitarContraseña() {
+      var adminPassword = prompt('Ingresa la contraseña de administrador:');
+      
+      // Aquí puedes realizar la verificación de la contraseña de administrador.
+      // Por ejemplo, puedes compararla con una contraseña predefinida.
+  
+      var contraseñaCorrecta = "7777777"; // Contraseña de administrador válida
+  
+      if (adminPassword === contraseñaCorrecta) {
+        document.getElementById('registroForm').submit();
+      } else {
+        alert('Contraseña de administrador incorrecta. No se puede registrar.');
+      }
+    }
+  </script>
+</body>
+</html>

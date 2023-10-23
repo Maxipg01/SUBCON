@@ -1,0 +1,663 @@
+{% block stylesheets %}
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.25/css/jquery.dataTables.min.css">
+<style>
+  body {
+    font-family: Arial, sans-serif;
+
+  }
+
+  h1 {
+    color: #4CAF50;
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  td {
+    padding: 6px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+  }
+
+  th {
+    background-color: #4CAF50;
+    color: white;
+    text-align: center;
+    padding: 6px;
+    border-bottom: 1px solid #ddd;
+    font-size: 14px;
+  }
+
+  input[type="number"] {
+    width: 70px;
+    font-size: 14px;
+    text-align: center;
+  }
+
+  .btn-primary {
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 3px;
+    padding: 10px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-block;
+    text-align: center;
+    transition-duration: 0.4s;
+    margin-top: 10px;
+    margin-right: 10px;
+  }
+
+  .btn-primary:hover {
+    background-color: #45a049;
+  }
+
+  .total-label {
+    color: red;
+    font-weight: bold;
+    font-size: 24px;
+  }
+
+  /* Agregar estilo para las filas con "Accesible" igual a "0" */
+  .accesible-cero {
+    color: red;
+  }
+
+  /* Agregar estilo para el campo "ENVIAR" en rojo */
+  .enviar-cell {
+    color: red;
+  }
+
+  .titulo-t1 {
+    font-size: 24px;
+    text-align: center;
+    margin-bottom: 20px;
+    font-weight: bold;
+  }
+
+  .t1-1 {
+    background-color: #BF834E;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  /* Estilos para el valor de 'T1' igual a 2.0 */
+  .t1-2 {
+    background-color: #F288B9;
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  /* Estilos para el valor de 'T1' igual a 3.0 */
+  .t1-3 {
+    background-color: yellow;
+    color: black;
+    text-align: center;
+  }
+
+  .t1-5 {
+    background-color: #008000;
+    /* verde */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-5-5 {
+    background-color: #dc3545;
+    /* Rosa claro */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-6 {
+    background-color: #E76E1D;
+    /* Naranja */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-7 {
+    background-color: #134980;
+    /* Azul */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-8-5 {
+    background-color: #6b8e23;
+    /* Verde oliva */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-9 {
+    background-color: #17a2b8;
+    /* Celeste */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-9-5 {
+    background-color: #4D308C;
+    /* Morado */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-10 {
+    background-color: #2284E6;
+    /* Azul claro */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-10-5 {
+    background-color: #000080;
+    /* Azul marino */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-11 {
+    background-color: #98fb98;
+    /* Verde claro */
+    color: black;
+    text-align: center;
+  }
+
+  .t1-12 {
+    background-color: #038C73;
+    /* verde oscuro */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-13 {
+    background-color: #038C73;
+    /* verde oscuro */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-16 {
+    background-color: #038C73;
+    /* verde oscuro */
+    color: white;
+    font-weight: bold;
+    text-align: center;
+  }
+
+  .t1-1-1 {
+    background-color: #BF834E;
+    color: white;
+    font-weight: bold;
+  }
+
+  /* Estilos para el valor de 'T1' igual a 2.0 */
+  .t1-2-1 {
+    background-color: #F288B9;
+    color: white;
+    font-weight: bold;
+  }
+
+  /* Estilos para el valor de 'T1' igual a 3.0 */
+  .t1-3-1 {
+    background-color: yellow;
+    color: black;
+  }
+
+  .t1-5-1 {
+    background-color: #008000;
+    /* verde */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-5-5-1 {
+    background-color: #dc3545;
+    /* Rosa claro */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-6-1 {
+    background-color: #E76E1D;
+    /* Naranja */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-7-1 {
+    background-color: #134980;
+    /* Azul */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-8-5-1 {
+    background-color: #6b8e23;
+    /* Verde oliva */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-9-1 {
+    background-color: #17a2b8;
+    /* Celeste */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-9-5-1 {
+    background-color: #4D308C;
+    /* Morado */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-10-1 {
+    background-color: #2284E6;
+    /* Azul claro */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-10-5-1 {
+    background-color: #000080;
+    /* Azul marino */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-11-1 {
+    background-color: #98fb98;
+    /* Verde claro */
+    color: black;
+  }
+
+  .t1-12-1 {
+    background-color: #038C73;
+    /* verde oscuro */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-13-1 {
+    background-color: #038C73;
+    /* verde oscuro */
+    color: white;
+    font-weight: bold;
+  }
+
+  .t1-16-1 {
+    background-color: #038C73;
+    /* verde oscuro */
+    color: white;
+    font-weight: bold;
+  }
+</style>
+{% endblock %}
+
+{% block content %}
+<h1>BIENVENIDOS A SUBWAY HEB</h1>
+<h1>GENERAR PEDIDO</h1>
+
+<form method="post">
+  {% csrf_token %}
+  <table id="productos-table">
+    <thead>
+      <tr>
+        <th>ID</th>
+        <th>T1</th>
+        <th data-sortable="true">TIPO</th>
+        <th data-sortable="true">T2</th>
+        <th data-sortable="true">T3</th>
+        <th data-sortable="true">CANT</th>
+        <th data-sortable="true">T4</th>
+        <th data-sortable="true">KG/PZ</th>
+        <th data-sortable="true">WRIN</th>
+        <th data-sortable="true">DESCRIPCION</th>
+        <th data-sortable="true">CJ</th>
+        <th data-sortable="true">BOLSA</th>
+        <th data-sortable="true">KG/PZ</th>
+        <th data-sortable="true">TOT</th>
+        <th data-sortable="true">ENV</th>
+        <th data-sortable="true">KG/PZ</th>
+        <th data-sortable="true">ANT</th>
+        <th data-sortable="true">PROM</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for producto in productos %}
+      {% ifchanged producto.T1 %}
+      {% if producto.T1 == 1.0 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">PAN</td>
+      </tr>
+      {% elif producto.T1 == 2.0 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">PROTEINAS</td>
+      </tr>
+      {% elif producto.T1 == 3.0 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">QUESOS</td>
+      </tr>
+      {% elif producto.T1 == 5.0 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">VERDURAS</td>
+      </tr>
+      {% elif producto.T1 == 5.5 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">SALSAS</td>
+      </tr>
+      {% elif producto.T1 == 6.0 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">SABRITAS</td>
+      </tr>
+      {% elif producto.T1 == 7.0 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">GALLETAS</td>
+      </tr>
+      {% elif producto.T1 == 8.5 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">SAZONADORES</td>
+      </tr>
+      {% elif producto.T1 == 9.0 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">DESECHABLES</td>
+      </tr>
+      {% elif producto.T1 == 9.5 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">QUIMICOS LIMPIEZA</td>
+      </tr>
+      {% elif producto.T1 == 10.0 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">ARTICULOS LIMPIEZA</td>
+      </tr>
+      {% elif producto.T1 == 10.5 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">PAPELERIA</td>
+      </tr>
+      {% elif producto.T1 == 11.0 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">UNIFORMES</td>
+      </tr>
+      {% elif producto.T1 == 12.0 %}
+      <tr>
+        <td colspan="16" class="titulo-t1">EQUIPOS</td>
+      </tr>
+      {% endif %}
+      {% endifchanged %}
+      <tr>
+        {% if producto.ACCESIBLE == 0 %}
+        <td class="enviar-cell accesible-cero">{{ producto.id }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.T1 }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.TIPO }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.T2 }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.T3 }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.CANT }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.T4 }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.KG_UN }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.WRIN }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.DESCRIPCION }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.CJ }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.BOLSA }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.KG_PZ }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.TOTAL }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.ENVIAR }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.KG_UN }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.PEDIDO_ANTERIOR }}</td>
+        <td class="enviar-cell accesible-cero">{{ producto.PROM_MENSUAL }}</td>
+        {% else %}
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1{% elif producto.T1 == 2.0 %}t1-2{% elif producto.T1 == 3.0 %}t1-3{% elif producto.T1 == 5.0 %}t1-5{% elif producto.T1 == 5.5 %}t1-5-5{% elif producto.T1 == 6.0 %}t1-6{% elif producto.T1 == 7.0 %}t1-7{% elif producto.T1 == 8.5 %}t1-8-5{% elif producto.T1 == 9.0 %}t1-9{% elif producto.T1 == 9.5 %}t1-9-5{% elif producto.T1 == 10.0 %}t1-10{% elif producto.T1 == 10.5 %}t1-10-5{% elif producto.T1 == 11.0 %}t1-11{% elif producto.T1 == 12.0 %}t1-12{% elif producto.T1 == 13.0 %}t1-13{% elif producto.T1 == 16.0 %}t1-16{% endif %}">
+          {{ producto.id }}
+        </td>
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1{% elif producto.T1 == 2.0 %}t1-2{% elif producto.T1 == 3.0 %}t1-3{% elif producto.T1 == 5.0 %}t1-5{% elif producto.T1 == 5.5 %}t1-5-5{% elif producto.T1 == 6.0 %}t1-6{% elif producto.T1 == 7.0 %}t1-7{% elif producto.T1 == 8.5 %}t1-8-5{% elif producto.T1 == 9.0 %}t1-9{% elif producto.T1 == 9.5 %}t1-9-5{% elif producto.T1 == 10.0 %}t1-10{% elif producto.T1 == 10.5 %}t1-10-5{% elif producto.T1 == 11.0 %}t1-11{% elif producto.T1 == 12.0 %}t1-12{% elif producto.T1 == 13.0 %}t1-13{% elif producto.T1 == 16.0 %}t1-16{% endif %}">
+          {{ producto.T1 }}
+        </td>
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1{% elif producto.T1 == 2.0 %}t1-2{% elif producto.T1 == 3.0 %}t1-3{% elif producto.T1 == 5.0 %}t1-5{% elif producto.T1 == 5.5 %}t1-5-5{% elif producto.T1 == 6.0 %}t1-6{% elif producto.T1 == 7.0 %}t1-7{% elif producto.T1 == 8.5 %}t1-8-5{% elif producto.T1 == 9.0 %}t1-9{% elif producto.T1 == 9.5 %}t1-9-5{% elif producto.T1 == 10.0 %}t1-10{% elif producto.T1 == 10.5 %}t1-10-5{% elif producto.T1 == 11.0 %}t1-11{% elif producto.T1 == 12.0 %}t1-12{% elif producto.T1 == 13.0 %}t1-13{% elif producto.T1 == 16.0 %}t1-16{% endif %}">
+          {{ producto.TIPO }}
+        </td>
+        <td><input type="number" name="t2_{{ producto.id }}" value="{{ producto.T2 }}" min="0" step="0.01"
+            class="calculate-input" readonly></td>
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1{% elif producto.T1 == 2.0 %}t1-2{% elif producto.T1 == 3.0 %}t1-3{% elif producto.T1 == 5.0 %}t1-5{% elif producto.T1 == 5.5 %}t1-5-5{% elif producto.T1 == 6.0 %}t1-6{% elif producto.T1 == 7.0 %}t1-7{% elif producto.T1 == 8.5 %}t1-8-5{% elif producto.T1 == 9.0 %}t1-9{% elif producto.T1 == 9.5 %}t1-9-5{% elif producto.T1 == 10.0 %}t1-10{% elif producto.T1 == 10.5 %}t1-10-5{% elif producto.T1 == 11.0 %}t1-11{% elif producto.T1 == 12.0 %}t1-12{% elif producto.T1 == 13.0 %}t1-13{% elif producto.T1 == 16.0 %}t1-16{% endif %}">
+          {{ producto.T3 }}
+        </td>
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1{% elif producto.T1 == 2.0 %}t1-2{% elif producto.T1 == 3.0 %}t1-3{% elif producto.T1 == 5.0 %}t1-5{% elif producto.T1 == 5.5 %}t1-5-5{% elif producto.T1 == 6.0 %}t1-6{% elif producto.T1 == 7.0 %}t1-7{% elif producto.T1 == 8.5 %}t1-8-5{% elif producto.T1 == 9.0 %}t1-9{% elif producto.T1 == 9.5 %}t1-9-5{% elif producto.T1 == 10.0 %}t1-10{% elif producto.T1 == 10.5 %}t1-10-5{% elif producto.T1 == 11.0 %}t1-11{% elif producto.T1 == 12.0 %}t1-12{% elif producto.T1 == 13.0 %}t1-13{% elif producto.T1 == 16.0 %}t1-16{% endif %}">
+          {{ producto.CANT }}
+        </td>
+        <td><input type="number" name="t4_{{ producto.id }}" value="{{ producto.T4 }}" min="0" step="0.01"
+            class="calculate-input" readonly></td>
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1{% elif producto.T1 == 2.0 %}t1-2{% elif producto.T1 == 3.0 %}t1-3{% elif producto.T1 == 5.0 %}t1-5{% elif producto.T1 == 5.5 %}t1-5-5{% elif producto.T1 == 6.0 %}t1-6{% elif producto.T1 == 7.0 %}t1-7{% elif producto.T1 == 8.5 %}t1-8-5{% elif producto.T1 == 9.0 %}t1-9{% elif producto.T1 == 9.5 %}t1-9-5{% elif producto.T1 == 10.0 %}t1-10{% elif producto.T1 == 10.5 %}t1-10-5{% elif producto.T1 == 11.0 %}t1-11{% elif producto.T1 == 12.0 %}t1-12{% elif producto.T1 == 13.0 %}t1-13{% elif producto.T1 == 16.0 %}t1-16{% endif %}">
+          {{ producto.KG_UN }}
+        </td>
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1{% elif producto.T1 == 2.0 %}t1-2{% elif producto.T1 == 3.0 %}t1-3{% elif producto.T1 == 5.0 %}t1-5{% elif producto.T1 == 5.5 %}t1-5-5{% elif producto.T1 == 6.0 %}t1-6{% elif producto.T1 == 7.0 %}t1-7{% elif producto.T1 == 8.5 %}t1-8-5{% elif producto.T1 == 9.0 %}t1-9{% elif producto.T1 == 9.5 %}t1-9-5{% elif producto.T1 == 10.0 %}t1-10{% elif producto.T1 == 10.5 %}t1-10-5{% elif producto.T1 == 11.0 %}t1-11{% elif producto.T1 == 12.0 %}t1-12{% elif producto.T1 == 13.0 %}t1-13{% elif producto.T1 == 16.0 %}t1-16{% endif %}">
+          {{ producto.WRIN }}
+        </td>
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1-1{% elif producto.T1 == 2.0 %}t1-2-1{% elif producto.T1 == 3.0 %}t1-3-1{% elif producto.T1 == 5.0 %}t1-5-1{% elif producto.T1 == 5.5 %}t1-5-5-1{% elif producto.T1 == 6.0 %}t1-6-1{% elif producto.T1 == 7.0 %}t1-7-1{% elif producto.T1 == 8.5 %}t1-8-5-1{% elif producto.T1 == 9.0 %}t1-9-1{% elif producto.T1 == 9.5 %}t1-9-5-1{% elif producto.T1 == 10.0 %}t1-10-1{% elif producto.T1 == 10.5 %}t1-10-5-1{% elif producto.T1 == 11.0 %}t1-11-1{% elif producto.T1 == 12.0 %}t1-12-1{% elif producto.T1 == 13.0 %}t1-13-1{% elif producto.T1 == 16.0 %}t1-16-1{% endif %}">
+          {{ producto.DESCRIPCION }}
+        </td>
+        <td><input type="number" name="cj_{{ producto.id }}" value="{{ producto.CJ }}" min="0" step="0.01"
+            class="calculate-input"></td>
+        <td><input type="number" name="bolsa_{{ producto.id }}" value="{{ producto.BOLSA }}" min="0" step="0.01"
+            class="calculate-input"></td>
+        <td><input type="number" name="kg_pz_{{ producto.id }}" value="{{ producto.KG_PZ }}" min="0" step="0.01"
+            class="calculate-input"></td>
+        <td class="total-cell">{{ producto.TOTAL }}</td>
+        <td><input type="number" name="enviar_{{ producto.id }}" value="{{ producto.ENVIAR }}" min="0"
+            oninput="checkCantAEnviar(this, '{{ producto.LIMIT }}')"></td>
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1{% elif producto.T1 == 2.0 %}t1-2{% elif producto.T1 == 3.0 %}t1-3{% elif producto.T1 == 5.0 %}t1-5{% elif producto.T1 == 5.5 %}t1-5-5{% elif producto.T1 == 6.0 %}t1-6{% elif producto.T1 == 7.0 %}t1-7{% elif producto.T1 == 8.5 %}t1-8-5{% elif producto.T1 == 9.0 %}t1-9{% elif producto.T1 == 9.5 %}t1-9-5{% elif producto.T1 == 10.0 %}t1-10{% elif producto.T1 == 10.5 %}t1-10-5{% elif producto.T1 == 11.0 %}t1-11{% elif producto.T1 == 12.0 %}t1-12{% elif producto.T1 == 13.0 %}t1-13{% elif producto.T1 == 16.0 %}t1-16{% endif %}">
+          {{ producto.KG_UN }}
+        </td>
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1{% elif producto.T1 == 2.0 %}t1-2{% elif producto.T1 == 3.0 %}t1-3{% elif producto.T1 == 5.0 %}t1-5{% elif producto.T1 == 5.5 %}t1-5-5{% elif producto.T1 == 6.0 %}t1-6{% elif producto.T1 == 7.0 %}t1-7{% elif producto.T1 == 8.5 %}t1-8-5{% elif producto.T1 == 9.0 %}t1-9{% elif producto.T1 == 9.5 %}t1-9-5{% elif producto.T1 == 10.0 %}t1-10{% elif producto.T1 == 10.5 %}t1-10-5{% elif producto.T1 == 11.0 %}t1-11{% elif producto.T1 == 12.0 %}t1-12{% elif producto.T1 == 13.0 %}t1-13{% elif producto.T1 == 16.0 %}t1-16{% endif %}">
+          {{ producto.PEDIDO_ANTERIOR }}
+        </td>
+        <td
+          class="elementos_tabla {% if producto.T1 == 1.0 %}t1-1{% elif producto.T1 == 2.0 %}t1-2{% elif producto.T1 == 3.0 %}t1-3{% elif producto.T1 == 5.0 %}t1-5{% elif producto.T1 == 5.5 %}t1-5-5{% elif producto.T1 == 6.0 %}t1-6{% elif producto.T1 == 7.0 %}t1-7{% elif producto.T1 == 8.5 %}t1-8-5{% elif producto.T1 == 9.0 %}t1-9{% elif producto.T1 == 9.5 %}t1-9-5{% elif producto.T1 == 10.0 %}t1-10{% elif producto.T1 == 10.5 %}t1-10-5{% elif producto.T1 == 11.0 %}t1-11{% elif producto.T1 == 12.0 %}t1-12{% elif producto.T1 == 13.0 %}t1-13{% elif producto.T1 == 16.0 %}t1-16{% endif %}">
+          {{ producto.PROM_MENSUAL }}
+        </td>
+        {% endif %}
+      </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+
+  <div>
+    <input type="submit" value="Guardar cambios" onclick="return confirm('¿Estás seguro de guardar los cambios?')"
+      class="btn-primary">
+    <button id="limpiar-button" class="btn-primary">Limpiar</button>
+    <form method="post" action="{% url 'cuentas:pedidos' %}">
+      {% csrf_token %}
+      <!-- ... otros campos del formulario ... -->
+      <input type="hidden" name="usuario_id" value="{{ usuario_id }}">
+      <button type="submit" value="Ir al menú" name="ir_a_menu" class="btn-primary">Ir al Menú</button>
+    </form>
+    
+
+  </div>
+  <a href="{% url 'cuentas:finalizar_pedido' %}" onclick="return confirm('¿Estás seguro de finalizar el pedido?')"
+    class="btn-primary">Finalizar pedido</a>
+</form>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.25/js/jquery.dataTables.min.js"></script>
+<script>
+  $(document).ready(function () {
+    $('#productos-table').DataTable({
+      "order": [[1, "asc"]],
+      "paging": false, // Disable pagination
+      "info": false, // Disable information display
+      "lengthChange": false // Hide "Show entries" dropdown
+    });
+  });
+
+  function checkCantAEnviar(input, cant) {
+    var valor = parseInt(input.value);
+    if (valor > cant) {
+      var confirmacion = confirm("Estás a punto de pedir más de " + cant + " unidades/cajas de este producto, ¿estás seguro?");
+      if (!confirmacion) {
+        input.value = 0;
+      }
+    }
+  }
+
+  $('form').submit(function (e) {
+    // Validar que los valores de CANT_A_ENVIAR e INVENTARIO no sean menores que 0
+    var valoresInvalidos = false;
+    $('input[name^="enviar_"], input[name^="cj_"], input[name^="bolsa_"], input[name^="kg_pz_"]').each(function () {
+      var valor = parseInt($(this).val());
+      if (valor < 0) {
+        valoresInvalidos = true;
+        return false; // Salir del bucle
+      }
+    });
+
+    if (valoresInvalidos) {
+      e.preventDefault();
+      alert('Los valores de ENVIAR, CJ, BOLSA o KG_PZ no pueden ser menores que 0');
+    }
+  });
+</script>
+<script>
+  $(document).ready(function () {
+    // Función para calcular los totales de todas las filas
+    function calcularTotales() {
+      $('tr').each(function () {
+        var row = $(this);
+        var cj = parseFloat(row.find('input[name^="cj_"]').val());
+        var t2 = parseFloat(row.find('input[name^="t2_"]').val());
+        var bolsa = parseFloat(row.find('input[name^="bolsa_"]').val());
+        var t4 = parseFloat(row.find('input[name^="t4_"]').val());
+        var kg_pz = parseFloat(row.find('input[name^="kg_pz_"]').val());
+        var total = (cj * t2) + (bolsa * t4) + kg_pz;
+        row.find('.total-cell').text(total.toFixed(2));
+      });
+    }
+
+    // Escuchar el evento 'input' en todas las cajas de texto con clase 'calculate-input'
+    $(document).on('input', '.calculate-input', function () {
+      calcularTotales();
+    });
+
+    // Calcular los totales iniciales
+    calcularTotales();
+  });
+</script>
+
+<h1>Exportar datos</h1>
+<form action="{% url 'cuentas:enviar_correo' %}" method="post">
+
+  <a href="{% url 'cuentas:exportar_pdf' %}" class="btn-primary">Exportar a PDF</a>
+  <a href="{% url 'cuentas:exportar_txt' %}" class="btn-primary">Exportar a TXT</a>
+  {% csrf_token %}
+  <input type="submit" value="Enviar correo" class="btn-primary">
+
+</form>
+<label for="cant-a-enviar-total" class="total-label">Cajas:</label>
+<label id="cant-a-enviar-total" class="total-label">{{ suma_total }}</label>
+
+<script>
+  // Obtener todas las cajas de texto de CANT_A_ENVIAR
+  const EnviarInputs = document.querySelectorAll('input[name^="enviar_"]');
+
+  // Función para calcular la suma total
+  function calcularSumaTotal() {
+    let sumaTotal = 0;
+
+    // Sumar los valores de cada caja de texto
+    EnviarInputs.forEach(input => {
+      const valor = parseInt(input.value);
+      sumaTotal += isNaN(valor) ? 0 : valor;
+    });
+
+    // Mostrar la suma total en el label
+    const EnviarTotalLabel = document.getElementById('cant-a-enviar-total');
+    EnviarTotalLabel.textContent = sumaTotal.toString();
+  }
+
+  // Escuchar el evento 'input' en cada caja de texto
+  EnviarInputs.forEach(input => {
+    input.addEventListener('input', calcularSumaTotal);
+  });
+
+  // Calcular la suma total inicial
+  calcularSumaTotal();
+</script>
+
+<script>
+  // Función para limpiar los campos 'cj', 'bolsa', 'kg_pz', 'total' y 'enviar'
+  function limpiarCampos() {
+    // Mostrar mensaje de confirmación
+    const confirmacion = confirm("¿Estás seguro de limpiar los campos?");
+
+    if (confirmacion) {
+      const cjInputs = document.querySelectorAll('input[name^="cj_"]');
+      const bolsaInputs = document.querySelectorAll('input[name^="bolsa_"]');
+      const kg_pzInputs = document.querySelectorAll('input[name^="kg_pz_"]');
+      const totalInputs = document.querySelectorAll('input[name^="total_"]');
+      const enviarInputs = document.querySelectorAll('input[name^="enviar_"]');
+
+      // Limpiar los valores de las cajas de texto
+      cjInputs.forEach(input => {
+        input.value = 0.0;
+      });
+
+      bolsaInputs.forEach(input => {
+        input.value = 0.0;
+      });
+
+      kg_pzInputs.forEach(input => {
+        input.value = 0.0;
+      });
+
+      totalInputs.forEach(input => {
+        input.value = 0.0;
+      });
+
+      enviarInputs.forEach(input => {
+        input.value = 0;
+      });
+
+
+      // Calcular la suma total nuevamente
+      calcularSumaTotal();
+    }
+  }
+
+  // Obtener el botón 'Limpiar' y agregar el evento de clic
+  const limpiarButton = document.getElementById('limpiar-button');
+  limpiarButton.addEventListener('click', limpiarCampos);
+</script>
+
+
+{% endblock %}

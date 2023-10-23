@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Iniciar sesión</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    form {
+      max-width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      border: 1px solid #ccc;
+      border-radius: 5px;
+    }
+
+    form label {
+      display: block;
+      margin-bottom: 5px;
+    }
+
+    form input[type="text"],
+    form input[type="password"] {
+      width: 100%;
+      padding: 5px;
+      margin-bottom: 10px;
+      border: 1px solid #ccc;
+      border-radius: 3px;
+    }
+
+    form input[type="submit"] {
+      width: 100%;
+      padding: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+    }
+
+    form p {
+      text-align: center;
+      margin-top: 15px;
+    }
+
+    form a {
+      color: #4CAF50;
+    }
+  </style>
+</head>
+<body>
+  <h1>BIENVENIDO A SUBCON</h1>
+
+  <form method="post" action="{% url 'cuentas:login' %}">
+    {% csrf_token %}
+    <div>
+      <label for="id_username">Usuario:</label>
+      <input type="text" name="username" id="id_username">
+    </div>
+    <div>
+      <label for="id_password">Contraseña:</label>
+      <input type="password" name="password" id="id_password">
+      <p><a href="{% url 'cuentas:registro' %}">Registrarse</a></p>
+    </div>
+    <input type="submit" value="Iniciar sesión">
+  </form>
+</body>
+</html>

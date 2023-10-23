@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Menú</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h1, h2 {
+      text-align: center;
+      text-transform: uppercase;
+    }
+
+    form {
+      max-width: 300px;
+      margin: 0 auto;
+      padding: 20px;
+      text-align: center;
+    }
+
+    .button-frame {
+      border: 1px solid #ccc;
+      border-radius: 5px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
+
+    form input[type="submit"],
+    form button {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 10px;
+      background-color: #4CAF50;
+      color: white;
+      border: none;
+      border-radius: 3px;
+      cursor: pointer;
+      animation: scale-up-center 0.4s;
+    }
+
+    @keyframes scale-up-center {
+      0% {
+        transform: scale(0.5);
+      }
+      100% {
+        transform: scale(1);
+      }
+    }
+    
+    .clock {
+      text-align: center;
+      font-size: 18px;
+      margin-bottom: 10px;
+    }
+  </style>
+</head>
+<body>
+
+  {% if 'sucursal' in request.session %}
+  <h1>Bienvenidos a subway {{ request.session.sucursal }}</h1>
+  {% endif %}
+
+  <h2>¿Qué operación deseas realizar?</h2>
+
+  <div class="clock">
+    <script>
+      function showTime() {
+        var date = new Date();
+        var hours = date.getHours();
+        var minutes = date.getMinutes();
+        var seconds = date.getSeconds();
+        var day = date.getDate();
+        var month = date.getMonth() + 1;
+        var year = date.getFullYear();
+
+        hours = (hours < 10 ? "0" : "") + hours;
+        minutes = (minutes < 10 ? "0" : "") + minutes;
+        seconds = (seconds < 10 ? "0" : "") + seconds;
+        day = (day < 10 ? "0" : "") + day;
+        month = (month < 10 ? "0" : "") + month;
+
+        var time = hours + ":" + minutes + ":" + seconds;
+        var currentDate = day + "/" + month + "/" + year;
+
+        document.getElementById("time").innerHTML = time;
+        document.getElementById("date").innerHTML = currentDate;
+      }
+
+      setInterval(showTime, 1000);
+    </script>
+
+    <div id="time"></div>
+    <div id="date"></div>
+  </div>
+
+  <form method="post" action="{% url 'cuentas:menu' %}">
+    {% csrf_token %}
+    <div class="button-frame">
+      {% if tipo_usuario == 'usuario' %}
+        <input type="submit" name="actualizarBD" value="Actualizar la Base de Datos" class="scale-up-center" disabled></button>
+        {% if 'sucursal' in request.session %}
+          {% if request.session.sucursal == 'HEB' %}
+            <!-- Si la sucursal es HEB, mostramos el botón 'pedidos' y ocultamos 'pedidos4C' -->
+            <input type="submit" name="auditoria" value="Auditoria" class="scale-up-center" disabled>
+            <input type="submit" name="auditoria_4C" value="Auditoria" class="scale-up-center" style="display: none;" disabled>
+            <input type="submit" name="auditoriaBebidas" value="Auditoria Bebidas" class="scale-up-center" disabled>
+            <input type="submit" name="auditoria_4C_Bebidas" value="Auditoria Bebidas" class="scale-up-center" style="display: none;" disabled>
+          {% elif request.session.sucursal == '4 Caminos' %}
+            <!-- Si la sucursal es 4 Caminos, mostramos el botón 'pedidos4C' y ocultamos 'pedidos' -->
+            <input type="submit" name="auditoria" value="Auditoria" class="scale-up-center" style="display: none;" disabled>
+            <input type="submit" name="auditoria_4C" value="Auditoria" class="scale-up-center" disabled>
+            <input type="submit" name="auditoriaBebidas" value="Auditoria Bebidas" class="scale-up-center" style="display: none;" disabled>
+            <input type="submit" name="auditoria_4C_Bebidas" value="Auditoria Bebidas" disabled>
+          {% endif %}
+        {% endif %}
+      {% else %}
+        <input type="submit" name="actualizarBD" value="Actualizar la Base de Datos" class="scale-up-center"></button>
+        {% if 'sucursal' in request.session %}
+          {% if request.session.sucursal == 'HEB' %}
+            <!-- Si la sucursal es HEB, mostramos el botón 'pedidos' y ocultamos 'pedidos4C' -->
+            <input type="submit" name="auditoria" value="Auditoria" class="scale-up-center" >
+            <input type="submit" name="auditoria_4C" value="Auditoria" class="scale-up-center" style="display: none;" disabled>
+            <input type="submit" name="auditoriaBebidas" value="Auditoria Bebidas" class="scale-up-center" >
+            <input type="submit" name="auditoria_4C_Bebidas" value="Auditoria Bebidas" class="scale-up-center" style="display: none;" disabled>
+          {% elif request.session.sucursal == '4 Caminos' %}
+            <!-- Si la sucursal es 4 Caminos, mostramos el botón 'pedidos4C' y ocultamos 'pedidos' -->
+            <input type="submit" name="auditoria" value="Auditoria" class="scale-up-center" style="display: none;" disabled>
+            <input type="submit" name="auditoria_4C" value="Auditoria" class="scale-up-center" >
+            <input type="submit" name="auditoriaBebidas" value="Auditoria Bebidas" class="scale-up-center" style="display: none;" disabled>
+            <input type="submit" name="auditoria_4C_Bebidas" value="Auditoria Bebidas" >
+          {% endif %}
+        {% endif %}
+      {% endif %}
+      {% if 'sucursal' in request.session %}
+        {% if request.session.sucursal == 'HEB' %}
+          <!-- Si la sucursal es HEB, mostramos el botón 'pedidos' y ocultamos 'pedidos4C' -->
+          <input type="submit" name="pedidos" value="Generar Pedido" class="scale-up-center">
+          <input type="submit" name="pedidos4C" value="Generar Pedido" class="scale-up-center" style="display: none;">
+        {% elif request.session.sucursal == '4 Caminos' %}
+          <!-- Si la sucursal es 4 Caminos, mostramos el botón 'pedidos4C' y ocultamos 'pedidos' -->
+          <input type="submit" name="pedidos" value="Generar Pedido" class="scale-up-center" style="display: none;">
+          <input type="submit" name="pedidos4C" value="Generar Pedido" class="scale-up-center">
+        {% endif %}
+      {% endif %}
+      <button type="submit" name="cerrarSesion" class="scale-up-center">Cerrar sesión</button>
+    </div>
+  </form>
+</body>
+</html>

@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tabla de Auditoría HEB Bebidas</title>
+    <style>
+        /* Estilos para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        /* Estilos para filas impares */
+        tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        /* Estilos para enlaces */
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        /* Estilos para enlaces al pasar el mouse */
+        a:hover {
+            text-decoration: underline;
+        }
+
+
+        input[type="number"] {
+            width: 70px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .desc {
+            text-align: left;
+        }
+
+        h2,
+        h3 {
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition-duration: 0.4s;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        .styled-select {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 3px;
+            padding: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition-duration: 0.4s;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+
+        .styled-select:hover {
+            background-color: #45a049;
+        }
+        .total-label {
+            color: red;
+            font-weight: bold;
+            font-size: 24px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Actualizar productos auditoría HEB Bebidas</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="id_archivo">Seleccionar archivo:</label>
+            <input type="file" name="archivo" id="id_archivo" onchange="mostrarNombreArchivo()"
+                class="custom-file-input">
+            <input type="submit" value="Actualizar la Base de Datos" class="btn-primary">
+        </div>
+    </form>
+
+    <h2>Cargar datos existentes</h2>
+    <form method="post" action="{% url 'cuentas:recuperar_datos_Bebidas' %}">
+        {% csrf_token %}
+        <div>
+            <label for="select_dia_semanal">Dia de la semana:</label>
+            <select id="select_dia_semanal" name="dia_semanal" class="styled-select">
+                <option value="Dia" {% if dia_semanal_seleccionado == 'Dia' %}selected{% endif %}>Dia</option>
+                <option value="Lunes" {% if dia_semanal_seleccionado == 'Lunes' %}selected{% endif %}>Lunes</option>
+                <option value="Martes" {% if dia_semanal_seleccionado == 'Martes' %}selected{% endif %}>Martes</option>
+                <option value="Miercoles" {% if dia_semanal_seleccionado == 'Miercoles' %}selected{% endif %}>Miercoles</option>
+                <option value="Jueves" {% if dia_semanal_seleccionado == 'Jueves' %}selected{% endif %}>Jueves</option>
+                <option value="Viernes" {% if dia_semanal_seleccionado == 'Viernes' %}selected{% endif %}>Viernes</option>
+                <option value="Sabado" {% if dia_semanal_seleccionado == 'Sabado' %}selected{% endif %}>Sabado</option>
+                <option value="Domingo" {% if dia_semanal_seleccionado == 'Domingo' %}selected{% endif %}>Domingo</option>
+            </select>
+
+            <label for="select_dia">Día:</label>
+            <select id="select_dia" name="dia" class="styled-select">
+                {% for dia in dias %}
+                    <option value="{{ dia }}" {% if dia == dia_seleccionado %}selected{% endif %}>{{ dia }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="select_mes">Mes:</label>
+            <select id="select_mes" name="mes" class="styled-select">
+                <option value="Mes" {% if mes_seleccionado == 'Mes' %}selected{% endif %}>Mes</option>
+                <option value="Enero" {% if mes_seleccionado == 'Enero' %}selected{% endif %}>Enero</option>
+                <option value="Febrero" {% if mes_seleccionado == 'Febrero' %}selected{% endif %}>Febrero</option>
+                <option value="Marzo" {% if mes_seleccionado == 'Marzo' %}selected{% endif %}>Marzo</option>
+                <option value="Abril" {% if mes_seleccionado == 'Abril' %}selected{% endif %}>Abril</option>
+                <option value="Mayo" {% if mes_seleccionado == 'Mayo' %}selected{% endif %}>Mayo</option>
+                <option value="Junio" {% if mes_seleccionado == 'Junio' %}selected{% endif %}>Junio</option>
+                <option value="Julio" {% if mes_seleccionado == 'Julio' %}selected{% endif %}>Julio</option>
+                <option value="Agosto" {% if mes_seleccionado == 'Agosto' %}selected{% endif %}>Agosto</option>
+                <option value="Septiembre" {% if mes_seleccionado == 'Septiembre' %}selected{% endif %}>Septiembre</option>
+                <option value="Octubre" {% if mes_seleccionado == 'Octubre' %}selected{% endif %}>Octubre</option>
+                <option value="Noviembre" {% if mes_seleccionado == 'Noviembre' %}selected{% endif %}>Noviembre</option>
+                <option value="Diciembre" {% if mes_seleccionado == 'Diciembre' %}selected{% endif %}>Diciembre</option>
+            </select>
+
+            <label for="select_anio">Año:</label>
+            <select id="select_anio" name="anio" class="styled-select">
+                {% for año in años %}
+                <option value="{{ año }}" {% if año == año_seleccionado %}selected{% endif %}>{{ año }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn-primary">Recuperar Datos</button>
+    </form>
+    <h3>Tabla de Auditoría {{ dia_semanal_seleccionado }} {{ dia_seleccionado }} {{ mes_seleccionado }} de {{ año_seleccionado }}</h3>
+    <form method="post" action="{% url 'cuentas:auditoriaBebidas' %}">
+        {% csrf_token %}
+        <div>
+            <label for="select_dia_semanal">Dia de la semana:</label>
+            <select id="select_dia_semanal" name="dia_semanal" class="styled-select">
+                <option value="Dia" {% if dia_semanal_seleccionado == 'Dia' %}selected{% endif %}>Dia</option>
+                <option value="Lunes" {% if dia_semanal_seleccionado == 'Lunes' %}selected{% endif %}>Lunes</option>
+                <option value="Martes" {% if dia_semanal_seleccionado == 'Martes' %}selected{% endif %}>Martes</option>
+                <option value="Miercoles" {% if dia_semanal_seleccionado == 'Miercoles' %}selected{% endif %}>Miercoles</option>
+                <option value="Jueves" {% if dia_semanal_seleccionado == 'Jueves' %}selected{% endif %}>Jueves</option>
+                <option value="Viernes" {% if dia_semanal_seleccionado == 'Viernes' %}selected{% endif %}>Viernes</option>
+                <option value="Sabado" {% if dia_semanal_seleccionado == 'Sabado' %}selected{% endif %}>Sabado</option>
+                <option value="Domingo" {% if dia_semanal_seleccionado == 'Domingo' %}selected{% endif %}>Domingo</option>
+            </select>
+
+            <label for="select_dia">Día:</label>
+            <select id="select_dia" name="dia" class="styled-select">
+                {% for dia in dias %}
+                    <option value="{{ dia }}" {% if dia == dia_seleccionado %}selected{% endif %}>{{ dia }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="select_mes">Mes:</label>
+            <select id="select_mes" name="mes" class="styled-select">
+                <option value="Mes" {% if mes_seleccionado == 'Mes' %}selected{% endif %}>Mes</option>
+                <option value="Enero" {% if mes_seleccionado == 'Enero' %}selected{% endif %}>Enero</option>
+                <option value="Febrero" {% if mes_seleccionado == 'Febrero' %}selected{% endif %}>Febrero</option>
+                <option value="Marzo" {% if mes_seleccionado == 'Marzo' %}selected{% endif %}>Marzo</option>
+                <option value="Abril" {% if mes_seleccionado == 'Abril' %}selected{% endif %}>Abril</option>
+                <option value="Mayo" {% if mes_seleccionado == 'Mayo' %}selected{% endif %}>Mayo</option>
+                <option value="Junio" {% if mes_seleccionado == 'Junio' %}selected{% endif %}>Junio</option>
+                <option value="Julio" {% if mes_seleccionado == 'Julio' %}selected{% endif %}>Julio</option>
+                <option value="Agosto" {% if mes_seleccionado == 'Agosto' %}selected{% endif %}>Agosto</option>
+                <option value="Septiembre" {% if mes_seleccionado == 'Septiembre' %}selected{% endif %}>Septiembre</option>
+                <option value="Octubre" {% if mes_seleccionado == 'Octubre' %}selected{% endif %}>Octubre</option>
+                <option value="Noviembre" {% if mes_seleccionado == 'Noviembre' %}selected{% endif %}>Noviembre</option>
+                <option value="Diciembre" {% if mes_seleccionado == 'Diciembre' %}selected{% endif %}>Diciembre</option>
+            </select>
+
+            <label for="select_anio">Año:</label>
+            <select id="select_anio" name="anio" class="styled-select">
+                {% for año in años %}
+                <option value="{{ año }}" {% if año == año_seleccionado %}selected{% endif %}>{{ año }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <a> </a>
+        <div class="dataTables_wrapper">
+            <table id="productos-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>SUBWAY 60909 HEB Revolución</th>
+                        <th>MEDIDA</th>
+                        <th>Dia Anterior</th>
+                        <th>Dia Actual</th>
+                        <th>Compras</th>
+                        <th>Entrada</th>
+                        <th>Salida</th>
+                        <th>Consumo diario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                    <tr>
+                        <td> {{ producto.id }} </td>
+                        <td class="desc"> {{ producto.DESCRIPCION }} </td>
+                        <td> {{ producto.MEDIDA }} </td>
+                        <td>
+                            <input type="number" name="dia_anterior_{{ producto.id }}"
+                                value="{{ producto.DIA_ANTERIOR }}" min="0" step="1" class="calculate-input">
+                        </td>
+                        <td>
+                            <input type="number" name="dia_actual_{{ producto.id }}" value="{{ producto.DIA_ACTUAL }}"
+                                min="0" step="1" class="calculate-input">
+                        </td>
+                        <td>
+                            <input type="number" name="compras_{{ producto.id }}" value="{{ producto.COMPRAS }}" min="0"
+                                step="1" class="calculate-input">
+
+                        </td>
+
+                        <td>
+                            <input type="number" name="entrada_{{ producto.id }}" value="{{ producto.ENTRADA }}" min="0"
+                                step="1" class="calculate-input">
+                        </td>
+                        <td>
+                            <input type="number" name="salida_{{ producto.id }}" value="{{ producto.SALIDA }}" min="0"
+                                step="1" class="calculate-input">
+                        </td>
+                        <td class="total-cell">
+                            {{ producto.CONSUMO_DIARIO }}
+                        </td>
+                    </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div>
+                <input type="submit" name="guardar_cambios" value="Guardar cambios"
+                    onclick="return confirm('¿Estás seguro de guardar los cambios?')" class="btn-primary">
+                <input type="submit" name="limpiar_Bebidas_HEB" value="Vaciar" 
+                onclick="return confirm('¿Estás seguro de vaciar los cambios?')" class="btn-primary">
+                <a href="{% url 'cuentas:resumen_HEB_Bebidas' %}" class="btn-primary">Ir al Resumen</a>
+                <a href="{% url 'cuentas:menu' %}" class="btn-primary">Ir al Menú</a>
+            </div>
+            
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+    <script>
+        // Código JavaScript aquí
+        $('form').submit(function (e) {
+            // Validar que los valores de CANT_A_ENVIAR e INVENTARIO no sean menores que 0
+            var valoresInvalidos = false;
+            $('input[name^="dia_anterior_"], input[name^="dia_actual_"], input[name^="compras_"], input[name^="entrada_"], input[name^="salida_"]').each(function () {
+                var valor = parseInt($(this).val());
+                if (valor < 0) {
+                    valoresInvalidos = true;
+                    return false; // Salir del bucle
+                }
+            });
+            if (valoresInvalidos) {
+                e.preventDefault();
+                alert('Los valores de DIA ANTERIOR, DIA ACTUAL, COMPRAS, ENTRADA, SALIDA O MERMAS no pueden ser menores que 0');
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            function calcularConsumoDiario() {
+                $('tr').each(function (index) {
+                    var row = $(this);
+                    var dia_anterior = parseInt(row.find('input[name^="dia_anterior_"]').val()) || 0;
+                    var dia_actual = parseInt(row.find('input[name^="dia_actual_"]').val()) || 0;
+                    var compras = parseInt(row.find('input[name^="compras_"]').val()) || 0;
+                    var entrada = parseInt(row.find('input[name^="entrada_"]').val()) || 0;
+                    var salida = parseInt(row.find('input[name^="salida_"]').val()) || 0;
+
+                    // Calcula 'consumo_diario' usando 'calcularCompras'
+                    var consumo_diario;
+                    if (dia_actual === 0) {
+                        consumo_diario = 0;
+                    } else {
+                        consumo_diario = (-dia_anterior) - compras + dia_actual - entrada + salida;
+                    }
+
+                    row.find('.total-cell').text(consumo_diario);
+                });
+            }
+
+            // Escuchar el evento 'input' en todas las cajas de texto con clase 'calculate-input'
+            $(document).on('input', '.calculate-input', function () {
+                calcularConsumoDiario();
+            });
+
+            // Calcular los totales iniciales
+            calcularConsumoDiario();
+        });
+    </script>
+
+    <label for="cant-a-enviar-total" class="total-label">Total de Bebidas:</label>
+    <label id="cant-a-enviar-total" class="total-label">{{ suma_total }}</label>
+    <script>
+        // Obtener todas las cajas de texto de CANT_A_ENVIAR
+        const EnviarInputs = document.querySelectorAll('input[name^="dia_actual_"]');
+
+        // Función para calcular la suma total
+        function calcularSumaTotal() {
+        let sumaTotal = 0;
+
+        // Sumar los valores de cada caja de texto
+        EnviarInputs.forEach(input => {
+            const valor = parseInt(input.value);
+            sumaTotal += isNaN(valor) ? 0 : valor;
+            });
+
+        // Mostrar la suma total en el label
+        const EnviarTotalLabel = document.getElementById('cant-a-enviar-total');
+        EnviarTotalLabel.textContent = sumaTotal.toString();
+        }
+        // Escuchar el evento 'input' en cada caja de texto
+        EnviarInputs.forEach(input => {
+            input.addEventListener('input', calcularSumaTotal);
+        });
+        // Calcular la suma total inicial
+        calcularSumaTotal();
+    </script>
+    
+
+
+</body>
+
+
+</html>

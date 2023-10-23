@@ -1,0 +1,537 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Tabla de Auditoría 4 Caminos</title>
+    <style>
+        /* Estilos para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        /* Estilos para filas impares */
+        tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        /* Estilos para enlaces */
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        /* Estilos para enlaces al pasar el mouse */
+        a:hover {
+            text-decoration: underline;
+        }
+
+
+        input[type="number"] {
+            width: 70px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .desc {
+            text-align: left;
+        }
+
+        h2,
+        h3 {
+            text-align: center;
+            font-size: 28px;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition-duration: 0.4s;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        .styled-select {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 3px;
+            padding: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition-duration: 0.4s;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+
+        .styled-select:hover {
+            background-color: #45a049;
+        }
+
+    </style>
+</head>
+
+<body>
+    <h1>Actualizar productos 4 Caminos auditoría</h1>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        <div>
+            <label for="id_archivo">Seleccionar archivo:</label>
+            <input type="file" name="archivo" id="id_archivo" onchange="mostrarNombreArchivo()"
+                class="custom-file-input">
+            <input type="submit" value="Actualizar la Base de Datos" class="btn-primary">
+        </div>
+    </form>
+
+    <h2>Cargar datos existentes</h2>
+    <form method="post" action="{% url 'cuentas:recuperar_datos_4C' %}">
+        {% csrf_token %}
+        <div>
+            <label for="select_dia_semanal">Dia de la semana:</label>
+            <select id="select_dia_semanal" name="dia_semanal" class="styled-select">
+                <option value="Dia" {% if dia_semanal_seleccionado == 'Dia' %}selected{% endif %}>Dia</option>
+                <option value="Lunes" {% if dia_semanal_seleccionado == 'Lunes' %}selected{% endif %}>Lunes</option>
+                <option value="Martes" {% if dia_semanal_seleccionado == 'Martes' %}selected{% endif %}>Martes</option>
+                <option value="Miercoles" {% if dia_semanal_seleccionado == 'Miercoles' %}selected{% endif %}>Miercoles</option>
+                <option value="Jueves" {% if dia_semanal_seleccionado == 'Jueves' %}selected{% endif %}>Jueves</option>
+                <option value="Viernes" {% if dia_semanal_seleccionado == 'Viernes' %}selected{% endif %}>Viernes</option>
+                <option value="Sabado" {% if dia_semanal_seleccionado == 'Sabado' %}selected{% endif %}>Sabado</option>
+                <option value="Domingo" {% if dia_semanal_seleccionado == 'Domingo' %}selected{% endif %}>Domingo</option>
+            </select>
+
+            <label for="select_dia">Día:</label>
+            <select id="select_dia" name="dia" class="styled-select">
+                {% for dia in dias %}
+                    <option value="{{ dia }}" {% if dia == dia_seleccionado %}selected{% endif %}>{{ dia }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="select_mes">Mes:</label>
+            <select id="select_mes" name="mes" class="styled-select">
+                <option value="Mes" {% if mes_seleccionado == 'Mes' %}selected{% endif %}>Mes</option>
+                <option value="Enero" {% if mes_seleccionado == 'Enero' %}selected{% endif %}>Enero</option>
+                <option value="Febrero" {% if mes_seleccionado == 'Febrero' %}selected{% endif %}>Febrero</option>
+                <option value="Marzo" {% if mes_seleccionado == 'Marzo' %}selected{% endif %}>Marzo</option>
+                <option value="Abril" {% if mes_seleccionado == 'Abril' %}selected{% endif %}>Abril</option>
+                <option value="Mayo" {% if mes_seleccionado == 'Mayo' %}selected{% endif %}>Mayo</option>
+                <option value="Junio" {% if mes_seleccionado == 'Junio' %}selected{% endif %}>Junio</option>
+                <option value="Julio" {% if mes_seleccionado == 'Julio' %}selected{% endif %}>Julio</option>
+                <option value="Agosto" {% if mes_seleccionado == 'Agosto' %}selected{% endif %}>Agosto</option>
+                <option value="Septiembre" {% if mes_seleccionado == 'Septiembre' %}selected{% endif %}>Septiembre</option>
+                <option value="Octubre" {% if mes_seleccionado == 'Octubre' %}selected{% endif %}>Octubre</option>
+                <option value="Noviembre" {% if mes_seleccionado == 'Noviembre' %}selected{% endif %}>Noviembre</option>
+                <option value="Diciembre" {% if mes_seleccionado == 'Diciembre' %}selected{% endif %}>Diciembre</option>
+            </select>
+
+            <label for="select_anio">Año:</label>
+            <select id="select_anio" name="anio" class="styled-select">
+                {% for año in años %}
+                <option value="{{ año }}" {% if año == año_seleccionado %}selected{% endif %}>{{ año }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <button type="submit" class="btn-primary">Recuperar Datos</button>
+    </form>
+    <h3>Tabla de Auditoría {{ dia_semanal_seleccionado }} {{ dia_seleccionado }} {{ mes_seleccionado }} de {{ año_seleccionado }}</h3>
+    <form method="post" action="{% url 'cuentas:auditoria_4C' %}">
+        {% csrf_token %}
+        <div>
+            <label for="select_dia_semanal">Dia de la semana:</label>
+            <select id="select_dia_semanal" name="dia_semanal" class="styled-select">
+                <option value="Dia" {% if dia_semanal_seleccionado == 'Dia' %}selected{% endif %}>Dia</option>
+                <option value="Lunes" {% if dia_semanal_seleccionado == 'Lunes' %}selected{% endif %}>Lunes</option>
+                <option value="Martes" {% if dia_semanal_seleccionado == 'Martes' %}selected{% endif %}>Martes</option>
+                <option value="Miercoles" {% if dia_semanal_seleccionado == 'Miercoles' %}selected{% endif %}>Miercoles</option>
+                <option value="Jueves" {% if dia_semanal_seleccionado == 'Jueves' %}selected{% endif %}>Jueves</option>
+                <option value="Viernes" {% if dia_semanal_seleccionado == 'Viernes' %}selected{% endif %}>Viernes</option>
+                <option value="Sabado" {% if dia_semanal_seleccionado == 'Sabado' %}selected{% endif %}>Sabado</option>
+                <option value="Domingo" {% if dia_semanal_seleccionado == 'Domingo' %}selected{% endif %}>Domingo</option>
+            </select>
+
+            <label for="select_dia">Día:</label>
+            <select id="select_dia" name="dia" class="styled-select">
+                {% for dia in dias %}
+                    <option value="{{ dia }}" {% if dia == dia_seleccionado %}selected{% endif %}>{{ dia }}</option>
+                {% endfor %}
+            </select>
+
+            <label for="select_mes">Mes:</label>
+            <select id="select_mes" name="mes" class="styled-select">
+                <option value="Mes" {% if mes_seleccionado == 'Mes' %}selected{% endif %}>Mes</option>
+                <option value="Enero" {% if mes_seleccionado == 'Enero' %}selected{% endif %}>Enero</option>
+                <option value="Febrero" {% if mes_seleccionado == 'Febrero' %}selected{% endif %}>Febrero</option>
+                <option value="Marzo" {% if mes_seleccionado == 'Marzo' %}selected{% endif %}>Marzo</option>
+                <option value="Abril" {% if mes_seleccionado == 'Abril' %}selected{% endif %}>Abril</option>
+                <option value="Mayo" {% if mes_seleccionado == 'Mayo' %}selected{% endif %}>Mayo</option>
+                <option value="Junio" {% if mes_seleccionado == 'Junio' %}selected{% endif %}>Junio</option>
+                <option value="Julio" {% if mes_seleccionado == 'Julio' %}selected{% endif %}>Julio</option>
+                <option value="Agosto" {% if mes_seleccionado == 'Agosto' %}selected{% endif %}>Agosto</option>
+                <option value="Septiembre" {% if mes_seleccionado == 'Septiembre' %}selected{% endif %}>Septiembre</option>
+                <option value="Octubre" {% if mes_seleccionado == 'Octubre' %}selected{% endif %}>Octubre</option>
+                <option value="Noviembre" {% if mes_seleccionado == 'Noviembre' %}selected{% endif %}>Noviembre</option>
+                <option value="Diciembre" {% if mes_seleccionado == 'Diciembre' %}selected{% endif %}>Diciembre</option>
+            </select>
+
+            <label for="select_anio">Año:</label>
+            <select id="select_anio" name="anio" class="styled-select">
+                {% for año in años %}
+                <option value="{{ año }}" {% if año == año_seleccionado %}selected{% endif %}>{{ año }}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="dataTables_wrapper">
+            <table id="productos-table">
+                <thead>
+                    <tr>
+                        <th>#</th>
+                        <th>SUBWAY 33103 Plaza 4 Caminos </th>
+                        <th>MEDIDA</th>
+                        <th>Dia Anterior</th>
+                        <th>Dia Actual</th>
+                        <th>Cajas</th>
+                        <th>Compras</th>
+                        <th>Entrada</th>
+                        <th>Salida</th>
+                        <th>Mermas</th>
+                        <th>Consumo diario</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for producto in productos %}
+                    <tr>
+                        <td> {{ producto.id }} </td>
+                        <td class="desc"> {{ producto.DESCRIPCION }} </td>
+                        <td> {{ producto.MEDIDA }} </td>
+                        <td>
+                            <input type="number" name="dia_anterior_{{ producto.id }}"
+                                value="{{ producto.DIA_ANTERIOR }}" step="0.001" class="calculate-input" {% if producto.id == 9 %}readonly{% endif %}>
+                        </td>
+                        <td>
+                            <input type="number" name="dia_actual_{{ producto.id }}" value="{{ producto.DIA_ACTUAL }}"
+                                 step="0.001" class="calculate-input" {% if producto.id == 9 %}readonly{% endif %}>
+                        </td>
+                        <td>
+                            <input type="number" name="cajas_{{ producto.id }}" id="cajas_{{ producto.id }}"
+                                value="{{ producto.CAJAS }}" min="0" step="1" class="calculate-input"
+                                data-product-id="{{ producto.id }}" {% if producto.id == 31 or producto.id == 9 %}readonly{% endif %}>
+                        </td>
+                        <td>
+                            <input type="number" id="compras_{{ producto.id }}" class="calculate-input" step="0.01"
+                            data-product-id="{{ producto.id }}" value="{{ producto.COMPRAS }}"/>
+                        </td>
+                        <td>
+                            <input type="number" name="entrada_{{ producto.id }}" value="{{ producto.ENTRADA }}" min="0"
+                                step="0.001" class="calculate-input" {% if producto.id == 31 or producto.id == 9 %}readonly{% endif %} >
+                        </td>
+                        <td>
+                            <input type="number" name="salida_{{ producto.id }}" value="{{ producto.SALIDA }}" min="0"
+                                step="0.001" class="calculate-input" {% if producto.id == 31 or producto.id == 9 %}readonly{% endif %}>
+                        </td>
+                        <td>
+                            <input type="number" name="mermas_{{ producto.id }}" value="{{ producto.MERMAS }}" min="0"
+                                step="0.001" class="calculate-input" {% if producto.id == 30 or producto.id == 31 or producto.id == 9 %}readonly{% endif %}>
+                        </td>
+                        <td class="total-cell">
+                            {{ producto.CONSUMO_DIARIO }}
+                        </td>
+                        <td>
+                            {% if dia_semanal_seleccionado == 'Viernes' %}
+                            <input type="checkbox" name="check_{{ producto.id }}">
+                            {% endif %}
+                        </td>
+                                            
+                    </tr>
+
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <div>
+                <input type="submit" name="guardar_cambios" value="Guardar cambios"
+                    onclick="return confirm('¿Estás seguro de guardar los cambios?')" class="btn-primary">
+                <input type="submit" name="limpiar_4C" value="Vaciar" 
+                onclick="return confirm('¿Estás seguro de vaciar los cambios?')" class="btn-primary">
+                <a href="{% url 'cuentas:resumen_4C' %}" class="btn-primary">Ir al Resumen</a>
+                <a href="{% url 'cuentas:menu' %}" class="btn-primary">Ir al Menú</a>
+            </div>
+            
+    </form>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+
+
+
+    <script>
+        // Código JavaScript aquí
+        $('form').submit(function (e) {
+            // Validar que los valores de CANT_A_ENVIAR e INVENTARIO no sean menores que 0
+            var valoresInvalidos = false;
+            $('input[name^="compras_"], input[name^="entrada_"], input[name^="salida_"], input[name^="mermas_"]').each(function () {
+                var valor = parseInt($(this).val());
+                if (valor < 0) {
+                    valoresInvalidos = true;
+                    return false; // Salir del bucle
+                }
+            });
+            if (valoresInvalidos) {
+                e.preventDefault();
+                alert('Los valores de DIA ANTERIOR, DIA ACTUAL, COMPRAS, ENTRADA, SALIDA O MERMAS no pueden ser menores que 0');
+            }
+        });
+    </script>
+
+    <script>
+        $(document).ready(function () {
+            function calcularCompras(productoId) {
+                const comprasInput = $(`#compras_${productoId}`);
+                const cajasInput = $(`#cajas_${productoId}`);
+                const cajas = parseInt(cajasInput.val());
+                const compras = parseFloat(comprasInput.val());
+
+                // Realizar el cálculo específico para cada producto
+                var comprasCalculadas = 0;
+                // Realizar el cálculo específico para cada producto
+                if (productoId === 1) {
+                    comprasCalculadas = cajas * 70;
+                } else if (productoId === 2) {
+                    comprasCalculadas = cajas * 9.6;
+                } else if (productoId === 3) {
+                    comprasCalculadas = cajas * 11.5;
+                } else if (productoId === 4) {
+                    comprasCalculadas = cajas * 8;
+                } else if (productoId === 5) {
+                    comprasCalculadas = cajas * 7;
+                } else if (productoId === 6) {
+                    comprasCalculadas = cajas * 10;
+                } else if (productoId === 7) {
+                    comprasCalculadas = cajas * 9.6;
+                } else if (productoId === 8) {
+                    comprasCalculadas = cajas * 6;
+                } else if (productoId === 9) {
+                    comprasCalculadas = 0;  
+                } else if (productoId === 10) {
+                    comprasCalculadas = cajas * 12;
+                } else if (productoId === 11) {
+                    comprasCalculadas = cajas * 75;
+                } else if (productoId === 12) {
+                    comprasCalculadas = cajas * 600;
+                } else if (productoId === 13) {
+                    comprasCalculadas = cajas * 7;
+                } else if (productoId === 14) {
+                    comprasCalculadas = cajas * 9.08;
+                } else if (productoId === 15) {
+                    comprasCalculadas = cajas * 9.08;
+                } else if (productoId === 16) {
+                    comprasCalculadas = cajas * 9;
+                } else if (productoId === 17) {
+                    comprasCalculadas = cajas * 8;
+                } else if (productoId === 18) {
+                    comprasCalculadas = cajas * 8;
+                } else if (productoId === 19) {
+                    comprasCalculadas = cajas * 8;
+                } else if (productoId === 20) {
+                    comprasCalculadas = cajas * 8;
+                } else if (productoId === 21) {
+                    comprasCalculadas = cajas * 8;
+                } else if (productoId === 22) {
+                    comprasCalculadas = cajas * 8;
+                } else if (productoId === 23) {
+                    comprasCalculadas = cajas * 4;
+                } else if (productoId === 24) {
+                    comprasCalculadas = cajas * 8;
+                } else if (productoId === 25) {
+                    comprasCalculadas = cajas * 4;
+                } else if (productoId === 26) {
+                    comprasCalculadas = cajas * 6;
+                } else if (productoId === 27) {
+                    comprasCalculadas = cajas * 6;
+                } else if (productoId === 28) {
+                    comprasCalculadas = cajas * 50;
+                } else if (productoId === 29) {
+                    comprasCalculadas = cajas * 200;
+                } else if (productoId === 30) {
+                    comprasCalculadas = cajas; 
+                } else if (productoId === 31) {
+                    comprasCalculadas = 0;  
+                }
+
+                // Mostrar el resultado en el input de compras
+                comprasInput.val(comprasCalculadas.toFixed(2));
+            }
+
+            // Escuchar el evento 'input' en las cajas de entrada
+            $('.calculate-input').on('input', function () {
+                const productoId = $(this).data('product-id');
+                calcularCompras(productoId);
+            });
+        });
+
+    </script>
+    <script>
+        $(document).ready(function () {
+            function calcularConsumoDiario() {
+                $('tr').each(function (index) {
+                    var row = $(this);
+                    var dia_anterior = parseFloat(row.find('input[name^="dia_anterior_"]').val()) || 0;
+                    var dia_actual = parseFloat(row.find('input[name^="dia_actual_"]').val()) || 0;
+                    var entrada = parseFloat(row.find('input[name^="entrada_"]').val()) || 0;
+                    var salida = parseFloat(row.find('input[name^="salida_"]').val()) || 0;
+                    var mermas = parseFloat(row.find('input[name^="mermas_"]').val()) || 0;
+                    var compras = parseFloat(row.find('input[name^="compras_"]').val()) || 0;
+
+                    // Calcula 'compras' basado en 'cajas' y el índice de la fila
+                    var cajas = parseFloat(row.find('input[name^="cajas_"]').val()) || 0;
+                    var calcularCompras = 0;
+                    switch (index) {
+                        case 1:
+                            calcularCompras = cajas * 70;
+                            break;
+                        case 2:
+                            calcularCompras = cajas * 9.6;
+                            break;
+                        case 3:
+                            calcularCompras = cajas * 11.5;
+                            break;
+                        case 4:
+                            calcularCompras = cajas * 8;
+                            break;
+                        case 5:
+                            calcularCompras = cajas * 7;
+                            break;
+                        case 6:
+                            calcularCompras = cajas * 10;
+                            break;
+                        case 7:
+                            calcularCompras = cajas * 9.6;
+                            break;
+                        case 8:
+                            calcularCompras = cajas * 6;
+                            break;
+                        case 9:
+                            calcularCompras = 0;
+                            break;
+                        case 10:
+                            calcularCompras = cajas * 12;
+                            break;
+                        case 11:
+                            calcularCompras = cajas * 75;
+                            break;
+                        case 12:
+                            calcularCompras = cajas * 600;
+                            break;
+                        case 13:
+                            calcularCompras = cajas * 7;
+                            break;
+                        case 14:
+                            calcularCompras = cajas * 9.08;
+                            break;
+                        case 15:
+                            calcularCompras = cajas * 9.08;
+                            break;
+                        case 16:
+                            calcularCompras = cajas * 9;
+                            break;
+                        case 17:
+                            calcularCompras = cajas * 8;
+                            break;
+                        case 18:
+                            calcularCompras = cajas * 8;
+                            break;
+                        case 19:
+                            calcularCompras = cajas * 8;
+                            break;
+                        case 20:
+                            calcularCompras = cajas * 8;
+                            break;
+                        case 21:
+                            calcularCompras = cajas * 8;
+                            break;
+                        case 22:
+                            calcularCompras = cajas * 8;
+                            break;
+                        case 23:
+                            calcularCompras = cajas * 4;
+                            break;
+                        case 24:
+                            calcularCompras = cajas * 8;
+                            break;
+                        case 25:
+                            calcularCompras = cajas * 4;
+                            break;
+                        case 26:
+                            calcularCompras = cajas * 6;
+                            break;
+                        case 27:
+                            calcularCompras = cajas * 6;
+                            break;
+                        case 28:
+                            calcularCompras = cajas * 50;
+                            break;
+                        case 29:
+                            calcularCompras = cajas * 200;
+                            break;
+                        case 30:
+                            calcularCompras = cajas;
+                            break;
+                        case 31:
+                            calcularCompras = 0;
+                            break;
+                    }
+
+                    // Calcula 'consumo_diario' usando 'calcularCompras'
+                    var consumo_diario;
+                    if (dia_actual === 0.0) {
+                        consumo_diario = 0.0;
+                    }else {
+                        consumo_diario = (-dia_anterior) - calcularCompras + dia_actual - entrada + salida - mermas;
+                    }
+
+                    row.find('.total-cell').text(consumo_diario.toFixed(3));
+                });
+            }
+
+            // Escuchar el evento 'input' en todas las cajas de texto con clase 'calculate-input'
+            $(document).on('input', '.calculate-input', function () {
+                calcularConsumoDiario();
+            });
+
+            // Calcular los totales iniciales
+            calcularConsumoDiario();
+        });
+    </script>
+    
+
+
+</body>
+
+
+</html>

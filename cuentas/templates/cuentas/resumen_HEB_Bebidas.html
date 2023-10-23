@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resumen HEB Bebidas</title>
+
+    <style>
+        /* Estilos para la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th,
+        td {
+            padding: 8px;
+            text-align: center;
+            border-bottom: 1px solid #ddd;
+        }
+
+        th {
+            background-color: #f2f2f2;
+            text-align: center;
+        }
+
+        /* Estilos para filas impares */
+        tr:nth-child(odd) {
+            background-color: #f2f2f2;
+        }
+
+        /* Estilos para enlaces */
+        a {
+            text-decoration: none;
+            color: #007bff;
+        }
+
+        /* Estilos para enlaces al pasar el mouse */
+        a:hover {
+            text-decoration: underline;
+        }
+
+        input[type="number"] {
+            width: 70px;
+            font-size: 14px;
+            text-align: center;
+        }
+
+        .styled-select {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+            border: none;
+            border-radius: 3px;
+            padding: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition-duration: 0.4s;
+            margin-top: 10px;
+            margin-right: 20px;
+        }
+
+        .styled-select:hover {
+            background-color: #45a049;
+        }
+
+        .btn-primary {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 3px;
+            padding: 10px;
+            cursor: pointer;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+            transition-duration: 0.4s;
+            margin-top: 10px;
+            margin-right: 10px;
+        }
+
+        .btn-primary:hover {
+            background-color: #45a049;
+        }
+
+        h1,
+        h2,
+        h3 {
+            font-size: 28px;
+        }
+
+        h2,h3 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>Escoger fecha para mostrar el resumen de bebidas HEB</h1>
+
+    <form method="post" action="{% url 'cuentas:resumen_HEB_Bebidas' %}">
+        {% csrf_token %}
+        <label for="select_mes">Mes:</label>
+        <select id="select_mes" name="mes" class="styled-select">
+            <option value="Mes" {% if mes_seleccionado == 'Mes' %}selected{% endif %}>Mes</option>
+            <option value="Enero" {% if mes_seleccionado == 'Enero' %}selected{% endif %}>Enero</option>
+            <option value="Febrero" {% if mes_seleccionado == 'Febrero' %}selected{% endif %}>Febrero</option>
+            <option value="Marzo" {% if mes_seleccionado == 'Marzo' %}selected{% endif %}>Marzo</option>
+            <option value="Abril" {% if mes_seleccionado == 'Abril' %}selected{% endif %}>Abril</option>
+            <option value="Mayo" {% if mes_seleccionado == 'Mayo' %}selected{% endif %}>Mayo</option>
+            <option value="Junio" {% if mes_seleccionado == 'Junio' %}selected{% endif %}>Junio</option>
+            <option value="Julio" {% if mes_seleccionado == 'Julio' %}selected{% endif %}>Julio</option>
+            <option value="Agosto" {% if mes_seleccionado == 'Agosto' %}selected{% endif %}>Agosto</option>
+            <option value="Septiembre" {% if mes_seleccionado == 'Septiembre' %}selected{% endif %}>Septiembre</option>
+            <option value="Octubre" {% if mes_seleccionado == 'Octubre' %}selected{% endif %}>Octubre</option>
+            <option value="Noviembre" {% if mes_seleccionado == 'Noviembre' %}selected{% endif %}>Noviembre</option>
+            <option value="Diciembre" {% if mes_seleccionado == 'Diciembre' %}selected{% endif %}>Diciembre</option>
+        </select>
+
+        <label for="select_anio">Año:</label>
+        <select id="select_anio" name="anio" class="styled-select">
+            {% for año in años %}
+            <option value="{{ año }}" {% if año == año_seleccionado %}selected{% endif %}>{{ año }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="select_dia_inicial">Día Inicial:</label>
+        <select id="select_dia_inicial" name="dia_inicial" class="styled-select">
+            {% for dia in dias %}
+            <option value="{{ dia }}" {% if dia == dia_inicial %}selected{% endif %}>{{ dia }}</option>
+            {% endfor %}
+        </select>
+
+        <label for="select_dia_final">Día Final:</label>
+        <select id="select_dia_final" name="dia_final" class="styled-select">
+            {% for dia in dias %}
+            <option value="{{ dia }}" {% if dia == dia_final %}selected{% endif %}>{{ dia }}</option>
+            {% endfor %}
+        </select>
+
+        <button type="submit" class="btn-primary">Ver Resumen</button>
+
+        <h2> Tabla de resumen de {{ mes_seleccionado }} de {{ año_seleccionado }}</h2>
+        <table>
+            <thead>
+                <tr>
+                    <th>SUBWAY 60909 HEB Revolución</th>
+                    <th>MEDIDA</th>
+                    {% for dia, registros_dia in registros_por_dia.items %}
+                    <th>{{ registros_dia.0.DIA_SEMANAL }} {{ dia }} {{ registros_dia.0.MES }} {{ registros_dia.0.AÑO }} </th>
+                    {% endfor %}
+                </tr>
+            </thead>
+            <tbody>
+                {% for registro in registros_agrupados %}
+                <tr>
+                    <td>{{ registro.descripcion }}</td>
+                    <td>{{ registro.medida }}</td>
+                    {% for consumo_diario in registro.consumos_diarios %}
+                    <td>{{ consumo_diario }}</td>
+                    {% endfor %}
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+        <h3>Resumen por promedios y sumas del dia {{ dia_inicial }} al {{ dia_final }} de {{ mes_seleccionado }} de {{ año_seleccionado }}</h3>
+        <table>
+            <thead>
+                <tr>
+                    <th>SUBWAY 60909 HEB Revolución</th>
+                    <th>MEDIDA</th>
+                    <th>Promedio</th>
+                    <th>Suma</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for registro in registros_agrupados2 %}
+                <tr>
+                    <td>{{ registro.descripcion }}</td>
+                    <td>{{ registro.medida }}</td>
+                    <td>{{ registro.promedio }}</td>
+                    <td>{{ registro.suma }}</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+
+
+    </form>
+
+    <a href="{% url 'cuentas:auditoriaBebidas' %}" class="btn-primary">Regresar a Auditoria</a>
+
+</body>
+
+</html>

@@ -1,0 +1,102 @@
+{% block stylesheets %}
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+    }
+
+    h1 {
+      color: #4CAF50;
+      font-size: 24px;
+      text-align: center;
+      margin-bottom: 20px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    th, td {
+      padding: 8px;
+      text-align: left;
+      border-bottom: 1px solid #ddd;
+    }
+
+    th {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    li {
+      margin-bottom: 5px;
+    }
+
+    a {
+      color: #4CAF50;
+      text-decoration: none;
+      display: inline-block;
+      margin-top: 10px;
+    }
+
+    a:hover {
+      text-decoration: underline;
+    }
+  </style>
+{% endblock %}
+
+{% block content %}
+  <h1>Actualización Exitosa</h1>
+  <a href="{% url 'cuentas:actualizar' %}" class="btn-primary">REGRESAR</a>
+
+  {% if productos_nuevos %}
+    <h2>Productos nuevos agregados:</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>WRIN</th>
+          <th>DESCRIPCIÓN</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for producto in productos_nuevos %}
+          <tr>
+            <td>{{ producto.WRIN }}</td>
+            <td>{{ producto.DESCRIPCION }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No se han agregado productos nuevos.</p>
+  {% endif %}
+
+  {% if productos_eliminados %}
+    <h2>Productos eliminados:</h2>
+    <table>
+      <thead>
+        <tr>
+          <th>WRIN</th>
+          <th>DESCRIPCIÓN</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for producto in productos_eliminados %}
+          <tr>
+            <td>{{ producto.WRIN }}</td>
+            <td>{{ producto.DESCRIPCION }}</td>
+          </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  {% else %}
+    <p>No se han eliminado productos.</p>
+  {% endif %}
+
+  <a href="{% url 'cuentas:actualizar' %}" class="btn-primary">REGRESAR</a>
+{% endblock %}
